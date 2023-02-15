@@ -1,4 +1,6 @@
 export const isAuthenticated = (state) => {
-    if (state.auth.auth.idToken) return true;
-    return false;
+  console.log("decodedPayload1", state.auth.auth.email);
+
+  if (state.auth.auth.email) return true;
+  return false;
 };

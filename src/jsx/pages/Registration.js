@@ -1,41 +1,42 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import swal from "sweetalert";
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch } from "react-redux";
 import {
-    loadingToggleAction,
-    signupAction,
-} from '../../store/actions/AuthActions';
+  loadingToggleAction,
+  signupAction,
+} from "../../store/actions/AuthActions";
 // image
 import logo from "../../images/logo-full.png";
 
 function Register(props) {
-    const [email, setEmail] = useState('');
-    let errorsObj = { email: '', password: '' };
-    const [errors, setErrors] = useState(errorsObj);
-    const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  let errorsObj = { email: "", password: "" };
+  const [errors, setErrors] = useState(errorsObj);
+  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("");
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    function onSignUp(e) {
-        e.preventDefault();
-        let error = false;
-        const errorObj = { ...errorsObj };
-        if (email === '') {
-            errorObj.email = 'Email is Required';
-            error = true;
-			swal('Oops', errorObj.email, "error");
-        }
-        if (password === '') {
-            errorObj.password = 'Password is Required';
-            error = true;
-			swal('Oops', errorObj.password, "error");
-        }
-        setErrors(errorObj);
-        if (error) return;
-        dispatch(loadingToggleAction(true));
-        dispatch(signupAction(email, password, props.history));
+  function onSignUp(e) {
+    e.preventDefault();
+    let error = false;
+    const errorObj = { ...errorsObj };
+    if (email === "") {
+      errorObj.email = "Email is Required";
+      error = true;
+      swal("Oops", errorObj.email, "error");
     }
+    if (password === "") {
+      errorObj.password = "Password is Required";
+      error = true;
+      swal("Oops", errorObj.password, "error");
+    }
+    setErrors(errorObj);
+    if (error) return;
+    dispatch(loadingToggleAction(true));
+    dispatch(signupAction(email, password, userName, props.history));
+  }
   return (
     <div className="authincation h-100 p-meddle">
       <div className="container h-100">
@@ -46,27 +47,23 @@ function Register(props) {
                 <div className="col-xl-12">
                   <div className="auth-form">
                     <div className="text-center mb-3">
-                      <Link to="/login">
-                        <img src={logo} alt="" />
-                      </Link>
+                      <Link to="/login">Mentor</Link>
                     </div>
                     <h4 className="text-center mb-4 ">Sign up your account</h4>
-					{props.errorMessage && (
-						<div className=''>
-							{props.errorMessage}
-						</div>
-					)}
-					{props.successMessage && (
-						<div className=''>
-							{props.successMessage}
-						</div>
-					)}
+                    {props.errorMessage && (
+                      <div className="">{props.errorMessage}</div>
+                    )}
+                    {props.successMessage && (
+                      <div className="">{props.successMessage}</div>
+                    )}
                     <form onSubmit={onSignUp}>
                       <div className="form-group mb-3">
                         <label className="mb-1 ">
                           <strong>Username</strong>
                         </label>
                         <input
+                          defaultValue={userName}
+                          onChange={(e) => setUserName(e.target.value)}
                           type="text"
                           className="form-control"
                           placeholder="username"
@@ -77,28 +74,26 @@ function Register(props) {
                           <strong>Email</strong>
                         </label>
                         <input
-							defaultValue={email}
-							onChange={(e) => setEmail(e.target.value)}
-							className="form-control"
-							placeholder="email"
+                          defaultValue={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          className="form-control"
+                          placeholder="email"
                         />
                       </div>
-					  {errors.email && <div>{errors.email}</div>}
+                      {errors.email && <div>{errors.email}</div>}
                       <div className="form-group mb-3">
                         <label className="mb-1 ">
                           <strong>Password</strong>
                         </label>
                         <input
-							defaultValue={password}
-							onChange={(e) =>
-								setPassword(e.target.value)
-							}
-							className="form-control"
-							placeholder="password"
+                          defaultValue={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          className="form-control"
+                          placeholder="password"
                           //defaultValue="Password"
                         />
                       </div>
-					  {errors.password && <div>{errors.password}</div>}
+                      {errors.password && <div>{errors.password}</div>}
                       <div className="text-center mt-4">
                         <button
                           type="submit"
@@ -125,15 +120,14 @@ function Register(props) {
       </div>
     </div>
   );
-};
+}
 
 const mapStateToProps = (state) => {
-    return {
-        errorMessage: state.auth.errorMessage,
-        successMessage: state.auth.successMessage,
-        showLoading: state.auth.showLoading,
-    };
+  return {
+    errorMessage: state.auth.errorMessage,
+    successMessage: state.auth.successMessage,
+    showLoading: state.auth.showLoading,
+  };
 };
 
 export default connect(mapStateToProps)(Register);
-

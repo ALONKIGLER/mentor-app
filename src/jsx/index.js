@@ -138,11 +138,11 @@ const Markup = () => {
     { url: "modern-sidebar", component: Theme6 },
 
     /// Apps
-    { url: "app-profile", component: AppProfile },
+    // { url: "app-profile", component: AppProfile },
     { url: "email-compose", component: Compose },
     { url: "email-inbox", component: Inbox },
     { url: "email-read", component: Read },
-    { url: "app-calender", component: Calendar },
+    // { url: "app-calender", component: Calendar },
     { url: "post-details", component: PostDetails },
 
     /// Chart
